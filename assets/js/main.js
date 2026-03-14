@@ -27,19 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileClose = document.querySelector('.mobile-menu__close');
   const mobileOverlay = document.querySelector('.mobile-menu__overlay');
 
+  let _menuScrollY = 0;
+
   function openMenu() {
+    _menuScrollY = window.scrollY;
     mobileMenu?.classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${_menuScrollY}px`;
+    document.body.style.width = '100%';
     burger?.classList.add('active');
   }
 
   function closeMenu() {
     mobileMenu?.classList.remove('open');
     document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, _menuScrollY);
     burger?.classList.remove('active');
   }
 
-  burger?.addEventListener('click', openMenu);
+  burger?.addEventListener('click', () => {
+    mobileMenu?.classList.contains('open') ? closeMenu() : openMenu();
+  });
   mobileClose?.addEventListener('click', closeMenu);
   mobileOverlay?.addEventListener('click', closeMenu);
 
